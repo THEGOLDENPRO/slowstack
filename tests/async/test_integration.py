@@ -49,10 +49,9 @@ async def test_cancel():
                 raise RateLimitCancelError()
         except RateLimitCancelError:
             pass
-    
+
 @pytest.mark.asyncio
-#@match_time(0, 0.05)
-@debug_time()
+@match_time(0, 0.05)
 async def test_concurrent_cancel():
     #times_per_1 = TimesPerRateLimiter(1, 1)
     #times_per_2 = TimesPerRateLimiter(1, 1)
@@ -67,4 +66,5 @@ async def test_concurrent_cancel():
                 raise RateLimitCancelError()
         except RateLimitCancelError:
             pass
+
     await asyncio.gather(*[use_rate_limiter() for i in range(10)])
