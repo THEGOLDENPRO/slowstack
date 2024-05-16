@@ -4,7 +4,7 @@ from slowstack.asynchronous.any import AnyRateLimiter
 from slowstack.asynchronous.times_per import TimesPerRateLimiter
 from slowstack.asynchronous.all import AllRateLimiter
 from slowstack.common.errors import RateLimitCancelError
-from tests.utils import debug_time, match_time
+from tests.utils import debug_time, match_time, debug_performance
 
 
 @pytest.mark.asyncio
@@ -35,7 +35,8 @@ async def test_concurrent():
     await asyncio.gather(*[use_rate_limiter() for i in range(3)])
 
 @pytest.mark.asyncio
-@match_time(0, 0.05)
+#@match_time(0, 0.05)
+@debug_performance()
 async def test_cancel():
     times_per_1 = TimesPerRateLimiter(1, 0.1)
     times_per_2 = TimesPerRateLimiter(1, 0.1)

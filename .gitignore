@@ -2,3 +2,4 @@
 poetry.lock
 .ruff_cache
 dist
+performance.stats

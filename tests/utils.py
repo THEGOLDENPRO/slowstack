@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from typing import Any, Callable
 from typing_extensions import ParamSpec
-from asyncio import TimeoutError, wait_for
+
 from time import time
+from cProfile import Profile
+from asyncio import TimeoutError, wait_for
 
 
 P = ParamSpec("P")
@@ -48,6 +50,24 @@ def debug_time():
             end = time()
             time_used = end - start
             raise AssertionError(f"test took: {time_used}s")
+
+        return inner
+
+    return outer
+
+def debug_performance():
+    """
+    Error if the estimated time is off
+    """
+
+    def outer(func: Callable[P, Any]):
+        async def inner(*args: P.args, **kwargs: P.kwargs) -> None:
+            with Profile() as profile:
+                await func(*args, **kwargs)
+
+            profile.dump_stats("./performance.stats")
+
+            raise AssertionError("Check out 'performance.stats'!")
 
         return inner
 
