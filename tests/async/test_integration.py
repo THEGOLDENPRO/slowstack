@@ -35,8 +35,8 @@ async def test_concurrent():
     await asyncio.gather(*[use_rate_limiter() for i in range(3)])
 
 @pytest.mark.asyncio
-#@match_time(0, 0.05)
-@debug_performance()
+@match_time(0, 0.07)
+#@debug_performance()
 async def test_cancel():
     times_per_1 = TimesPerRateLimiter(1, 0.1)
     times_per_2 = TimesPerRateLimiter(1, 0.1)
